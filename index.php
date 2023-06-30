@@ -47,7 +47,7 @@
                 if($response->pageInfo->totalResults != 0){
                     echo "<br>".$response->items[0]->snippet->title;
                     echo "<br>".'is embeddable: '.$response->items[0]->status->embeddable."<br><br>";
-                } else {
+                } else { 
                     echo "<br>VIDEO IST OFFLINE<br><br>";
                 }
             }
@@ -55,7 +55,7 @@
     }
 
     //flag for sending Mails
-    $sendMail = false;
+    $sendMail = true;
 
     if($sendMail){
         //send mail
@@ -64,20 +64,21 @@
         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 
         $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smpt.gmail.com';  // Specify main and backup SMTP servers
+        $mail->Host = 'smtp-mail.outlook.com';                // Specify main and backup SMTP servers
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'EMAIL';                 // SMTP username
-        $mail->Password = 'PASSWORD';                           // SMTP password
+
+        $mail->Username = constant('EMAIL');                  // SMTP username
+        $mail->Password = constant('PASSWORD');                           // SMTP password
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
-        $mail->setFrom('EMAIL', 'Yahya Orhan');
-        $mail->addAddress('yahya.orhan@amc.or.at');     // Add a recipient
+        $mail->setFrom(constant('EMAIL'));
+        $mail->addAddress(constant('RECIPIENT'));     // Add a recipient
 
-        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->isHTML(true);                            // Set email format to HTML
 
-        $mail->Subject = 'Here is the subject';
-        $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+        $mail->Subject = 'Email-Report Videos';
+        $mail->Body    = 'Die Zahl der funktionerenden Videos ist: <b>'.count($videosToCheck).'!</b>';
         $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
         if(!$mail->send()) {
